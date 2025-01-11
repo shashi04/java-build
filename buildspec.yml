@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      # Install Maven
+      echo Installing Maven...
+      curl -sL https://github.com/apache/maven/releases/download/maven-3.8.4/apache-maven-3.8.4-bin.tar.gz | tar xz -C /opt
+      export PATH=/opt/apache-maven-3.8.4/bin:$PATH
+
+  build:
+    commands:
+      # Build the project using Maven
+      echo Building the Java project with Maven...
+      mvn clean install
+
+  post_build:
+    commands:
+      # Archive the build artifact
+      echo Build completed on `date`
+      mvn test
+artifacts:
+  files:
+    - target/*.jar
